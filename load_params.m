@@ -1,0 +1,15 @@
+p.m = 1.587;        % kg, quadcopter mass
+p.mp = 0.25;        % kg, pendulum mass
+p.g = 9.8065;       % m/s^2, gravitational acceleration
+p.A = 0.0625;       % m^2, reference area for drag
+p.rho = 1.225;      % kg/m^3, air density
+p.R = 0.127;        % m, propeller radius
+p.Ar = pi * p.R^2;  % m^2, propeller disk area
+p.L = 0.243;        % m, distance from center of mass to each rotor
+p.l = 0.5;          % m, pendulum length
+p.k = 3.17 * 10^-5; % N*s^2, thrust coefficient
+p.b = 7.69 * 10^-7; % N*m*s^2, rotor drag coefficient
+p.Ixx = 0.0213;     % kg*m^2, body inertia about x_B
+p.Iyy = 0.0213;     % kg*m^2, body inertia about y_B
+p.Izz = 0.0282;     % kg*m^2, body inertia about z_B
+p.kD = 0.25;        % kg/s, linear translation drag coefficient
