@@ -58,43 +58,44 @@ fprintf('Per-state peak magnitude:\n');
 disp(table(stateLabels', max(abs(X))', 'VariableNames',{'State','Peak'}))
 
 %% 6. Feedback Gain Matrix
-disp('State-feedback gain matrix:'); disp(K)
-
+disp('State-feedback gain matrix:'); 
+disp(K)
+save('eigval_controller.mat', 'K')
 %% 7. Model Characterization
-xref = [1, 0, 0;
-        -1, 0, 0;
-        0, 1, 0;
-        0, -1, 0;
-        0, 0, 1;
-        0, 0, -1];
-settling_bound = 0.02;
-
-for i = 1:6
-    % 1. Create the full 14-element target state vector (3 positions + 11 zeros)
-    xTarget_full = [xref(i,:)'; zeros(n - 3, 1)]; 
-    
-    % 2. Solve ODE (Parentheses group K*xTarget_full into an m x 1 vector)
-    [tStep, xStep] = ode45(@(t,x) Acl*x + B*(K*xTarget_full), tvec, x0);
-    
-    % 3. Calculate input profile cleanly without nested transposes
-    uStep = (xTarget_full.' - xStep) * K.'; 
-    
-    % 4. Compute 2% Settling Time 
-    pos_error = max(abs(xStep(:, 1:3) - xref(i,:)), [], 2); 
-    idx_settle = find(pos_error > settling_bound, 1, 'last') + 1;
-    
-    if isempty(idx_settle)
-        t_settle = tStep(1); % Already settled at t=0
-    elseif idx_settle > length(tStep)
-        t_settle = NaN;      % Did not settle within tvec limit
-    else
-        t_settle = tStep(idx_settle);
-    end
-    
-    % 5. Print results safely (Fixed the %% and cleaned up the \n alignment)
-    fprintf('Target %d: final position = %s, peak input = %s, time to settle (2%%) = %s\n', ...
-        i, mat2str(xStep(end,1:3),3), mat2str(max(abs(uStep),[],1),3), num2str(t_settle));
-
-    % Plot
-    plot_lin_sys(tStep, xStep,uStep)
-end
+% xref = [1, 0, 0;
+%         -1, 0, 0;
+%         0, 1, 0;
+%         0, -1, 0;
+%         0, 0, 1;
+%         0, 0, -1];
+% settling_bound = 0.02;
+% 
+% for i = 1:6
+%     % 1. Create the full 14-element target state vector (3 positions + 11 zeros)
+%     xTarget_full = [xref(i,:)'; zeros(n - 3, 1)]; 
+% 
+%     % 2. Solve ODE (Parentheses group K*xTarget_full into an m x 1 vector)
+%     [tStep, xStep] = ode45(@(t,x) Acl*x + B*(K*xTarget_full), tvec, x0);
+% 
+%     % 3. Calculate input profile cleanly without nested transposes
+%     uStep = (xTarget_full.' - xStep) * K.'; 
+% 
+%     % 4. Compute 2% Settling Time 
+%     pos_error = max(abs(xStep(:, 1:3) - xref(i,:)), [], 2); 
+%     idx_settle = find(pos_error > settling_bound, 1, 'last') + 1;
+% 
+%     if isempty(idx_settle)
+%         t_settle = tStep(1); % Already settled at t=0
+%     elseif idx_settle > length(tStep)
+%         t_settle = NaN;      % Did not settle within tvec limit
+%     else
+%         t_settle = tStep(idx_settle);
+%     end
+% 
+%     % 5. Print results safely (Fixed the %% and cleaned up the \n alignment)
+%     fprintf('Target %d: final position = %s, peak input = %s, time to settle (2%%) = %s\n', ...
+%         i, mat2str(xStep(end,1:3),3), mat2str(max(abs(uStep),[],1),3), num2str(t_settle));
+% 
+%     % Plot
+%     plot_lin_sys(tStep, xStep,uStep)
+% end
