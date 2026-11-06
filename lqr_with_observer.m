@@ -24,7 +24,7 @@ lqr_poles = pole(ss(A-B*K, B, C, D));
 
 % Pole Placement 
 observer_poles = 5 * real(lqr_poles) + 1i*imag(lqr_poles); 
-L = place(A', C', observer_poles)'; % Note the transposes
+L = place(A', C', observer_poles)'; 
 
 %% Augmented 28-State Closed-Loop System
 % Combined state vector z = [x; x_hat] (Size: 28x1)
