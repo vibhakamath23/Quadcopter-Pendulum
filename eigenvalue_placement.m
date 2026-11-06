@@ -16,7 +16,7 @@ fprintf('Controllability rank: %d of %d states\n', rank(ctrb(A,B)), n);
 fprintf('Number of inputs: %d\n', m);
 
 %% 2. Choose poles
-desiredPoles = [-2+1i, -2-1i, -2.5, -3, -3.5, -4, -4.5, -5, -5.5, -6, -6.5, -7, -7.5, -8];
+desiredPoles = [-2+1i, -2-1i, -3+1i, -3-1i, -4+1i, -4-1i, -4.5, -5, -5.5, -6, -6.5, -30, -35, -40];
 K = place(A, B, desiredPoles);
 Acl = A - B*K;
 fprintf('Eigenvalues of A_cl: \n')
