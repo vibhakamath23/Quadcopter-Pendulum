@@ -16,46 +16,33 @@ fprintf('Controllability rank: %d of %d states\n', rank(ctrb(A,B)), n);
 fprintf('Number of inputs: %d\n', m);
 
 %% 2. Choose poles (Decoupled by Physical Subsystem)
-desiredPoles = [-1.5+1i, -1.5-1i, -2.5, -3, -3.5, -4.5, -4.5, -5, -5.5, -6, -6.5, -30, -35, -40];
-K = place(A, B, desiredPoles);
+% desiredPoles = [-1.5+1i, -1.5-1i, -2.5, -3, -3.5, -4.5, -4.5, -5, -5.5, -6, -6.5, -30, -35, -40];
+% K = place(A, B, desiredPoles);
 
-% % The 14-state linear model decouples into 4 independent SISO subsystems:
-% %   - z (altitude):          states [3, 6],                input 1 (u_T)
-% %   - y (lateral):           states [2, 5, 7, 10],         input 2 (u_phi)
-% %   - x + pendulum (long.):  states [1, 4, 8, 11, 13, 14], input 3 (u_theta)
-% %   - psi (yaw):             states [9, 12],               input 4 (u_psi)
-% % Placing poles per subsystem eliminates cross-axis coupling and lowers ||K||.
-% 
-% idx_z   = [3, 6];
-% idx_y   = [2, 5, 7, 10];
-% idx_x   = [1, 4, 8, 11, 13, 14];
-% idx_psi = [9, 12];
-% 
-% % --- Preset A: Sub-Second Fast (Active - <1s settling on all axes, ||K|| = 117 < original 163) ---
-% poles_x   = [-3.84+5.68i, -3.84-5.68i, -8.28+7.26i, -8.28-7.26i, -3.52, -5.62];
-% poles_y   = [-5.80+3.00i, -5.80-3.00i, -13.0, -18.0];
-% poles_z   = [-6.50+4.50i, -6.50-4.50i];
-% poles_psi = [-8.0, -10.0];
-% 
-% % --- Preset B: Ultra-Fast Linear (~0.40s - 0.68s settling, higher gain ||K|| = 509) ---
-% % poles_x   = [-9.75+7.50i, -9.75-7.50i, -8.16+9.08i, -8.16-9.08i, -24.57, -3.64];
-% % poles_y   = [-7.50+4.00i, -7.50-4.00i, -16.0, -22.0];
-% % poles_z   = [-8.20+5.70i, -8.20-5.70i];
-% % poles_psi = [-10.0, -12.0];
-% 
-% % --- Preset C: Balanced / Small-Angle Safe (~0.79s - 1.44s settling, |theta| <= 30 deg, ||K|| = 48) ---
-% % poles_x   = [-2.30+4.60i, -2.30-4.60i, -2.60+1.45i, -2.60-1.45i, -5.20, -25.0];
-% % poles_y   = [-3.75+1.95i, -3.75-1.95i, -8.50, -12.0];
-% % poles_z   = [-4.10+2.85i, -4.10-2.85i];
-% % poles_psi = [-5.0, -6.0];
-% 
-% desiredPoles = [poles_x, poles_y, poles_z, poles_psi];
-% 
-% K = zeros(m, n);
-% K(1, idx_z)   = place(A(idx_z, idx_z),     B(idx_z, 1),   poles_z);
-% K(2, idx_y)   = place(A(idx_y, idx_y),     B(idx_y, 2),   poles_y);
-% K(3, idx_x)   = place(A(idx_x, idx_x),     B(idx_x, 3),   poles_x);
-% K(4, idx_psi) = place(A(idx_psi, idx_psi), B(idx_psi, 4), poles_psi);
+% The 14-state linear model decouples into 4 independent SISO subsystems:
+%   - z (altitude):          states [3, 6],                input 1 (u_T)
+%   - y (lateral):           states [2, 5, 7, 10],         input 2 (u_phi)
+%   - x + pendulum (long.):  states [1, 4, 8, 11, 13, 14], input 3 (u_theta)
+%   - psi (yaw):             states [9, 12],               input 4 (u_psi)
+% Placing poles per subsystem eliminates cross-axis coupling and lowers ||K||.
+
+idx_z   = [3, 6];
+idx_y   = [2, 5, 7, 10];
+idx_x   = [1, 4, 8, 11, 13, 14];
+idx_psi = [9, 12];
+
+poles_x   = [-2.30+4.60i, -2.30-4.60i, -2.60+1.45i, -2.60-1.45i, -5.20, -25.0];
+poles_y   = [-3.75+1.95i, -3.75-1.95i, -8.50, -12.0];
+poles_z   = [-4.10+2.85i, -4.10-2.85i];
+poles_psi = [-5.0, -6.0];
+
+desiredPoles = [poles_x, poles_y, poles_z, poles_psi];
+
+K = zeros(m, n);
+K(1, idx_z)   = place(A(idx_z, idx_z),     B(idx_z, 1),   poles_z);
+K(2, idx_y)   = place(A(idx_y, idx_y),     B(idx_y, 2),   poles_y);
+K(3, idx_x)   = place(A(idx_x, idx_x),     B(idx_x, 3),   poles_x);
+K(4, idx_psi) = place(A(idx_psi, idx_psi), B(idx_psi, 4), poles_psi);
 
 Acl = A - B*K;
 fprintf('Eigenvalues of A_cl: \n')
