@@ -59,3 +59,5 @@ u_effort = -(K * x_estimated')';
 
 %% Call Modified Plotting Function
 plot_lin_sys_observer(t, x_actual, u_effort, x_estimated);
+
+save('lqr_observer.mat', 'K', 'L')

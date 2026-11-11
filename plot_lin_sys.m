@@ -23,7 +23,7 @@ function plot_lin_sys(tStep,xStep,uStep)
     c = lines(4);
     yyaxis left
     h1 = plot(tStep, uStep(:,1), 'Color', c(1,:), 'LineWidth', 1.5);
-    ylabel('u_T', 'Interpreter','latex')
+    ylabel('$u_T$', 'Interpreter','latex')
     yyaxis right
     h2 = plot(tStep, uStep(:,2:4), 'LineWidth', 1.2);
     set(h2, {'Color'}, num2cell(c(2:4,:), 2));

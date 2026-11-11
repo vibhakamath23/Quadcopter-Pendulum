@@ -5,7 +5,7 @@ A = sys.A;  B = sys.B;  C = sys.C;  D = sys.D;
 n = size(A,1);  m = size(B,2);
 
 Q = eye(n);
-R = 1;
+R = eye(m);
 
 [K, P, E] = lqr(A, B, Q, R); % lqr gain matrix
 
@@ -43,3 +43,5 @@ grid on;
 title('Control Input Effort (u)');
 xlabel('Time (s)');
 ylabel('Control Action (u)');
+
+save('lqr_controller.mat', 'K')
