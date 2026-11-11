@@ -6,3 +6,5 @@ slprj/
 *.mexw64
 *.mexa64
 .DS_Store
+
+*.mat
