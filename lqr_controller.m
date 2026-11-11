@@ -5,8 +5,16 @@ A = sys.A;  B = sys.B;  C = sys.C;  D = sys.D;
 n = size(A,1);  m = size(B,2);
 
 Q = eye(n);
-R = eye(m);
+Q(1:3,1:3) = 50 * Q(1:3,1:3); % position scaling
+Q(4:6,4:6) = 25 * Q(4:6,4:6); % velocity scaling
+Q(7:9,7:9) = 2.5 * Q(7:9,7:9); % attitude scaling
+Q(10:12,10:12) = 0.75 * Q(10:12,10:12); % attitude rate scaling
+Q(13,13) = 2 * Q(13,13); % pendulum position scaling
+Q(14,14) = 0.5 * Q(14,14); % pendulum velocity scaling
 
+R = eye(m);
+R(1,1) = 10 * R(1,1); % total thrust scaling
+R(2:4,2:4) = 0.25 * R(2:4,2:4); % rotational velocity scaling
 [K, P, E] = lqr(A, B, Q, R); % lqr gain matrix
 
 %% Closed-Loop System
