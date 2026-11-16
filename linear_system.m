@@ -10,12 +10,14 @@ m = p.m;
 mp = p.mp;
 M = m + mp;
 
-A_vv = -kD / m * eye(3);
+% A_vv = -kD / m * eye(3);
+A_vv = diag([-kD/m, -kD/m, -kD/M]);
 A_veta = [0, (M * g / m), 0; 
           - (M * g / m), 0, 0; 
           0, 0, 0];
 A_valpha = [- (mp * g / m); 0; 0];
-alpha_alphav = [- kD / (M * l), 0, 0];
+% alpha_alphav = [- kD / (M * l), 0, 0];
+alpha_alphav = [kD/(M*l), 0, 0]; 
 alpha_alphaeta = [0, -g / l, 0];
 
 B_v = [0, 0, 0, 0;
@@ -50,3 +52,5 @@ D = 0;
 
 % state space system
 sys = ss(A, B, C, D);
+
+save('linear_system.mat', 'sys')

@@ -53,5 +53,5 @@ ylabel('$u_\phi$ - $u_\psi$', 'Interpreter','latex')
 xlabel('Time (s)')
 grid on
 legend([h1; h2], {'$u_T$', '$u_\phi$', '$u_\theta$', '$u_\psi$'}, 'Interpreter','latex', 'Location','best')
-title('Control effort u = -K \cdot \hat{x}');
+title('Control effort: $u = -K\hat{x}$', 'Interpreter', 'latex');
 end
