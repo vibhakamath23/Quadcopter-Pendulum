@@ -1,4 +1,4 @@
-function DronePendulumSimulation(states, time, p)
+function dronePendulumSimulation(states, time, p)
 % DronePendulumSimulation simulates the drone with inverted pendulum.
 %
 % states: Nx14 or 14xN matrix of state histories
@@ -8,7 +8,7 @@ function DronePendulumSimulation(states, time, p)
     nargin
     if nargin < 3
         p.L = 0.243;
-        p.ell = 0.5;
+        p.l = 0.5;
     end
 
     v = VideoWriter('drone_pendulum.mp4','MPEG-4');
@@ -76,9 +76,9 @@ function DronePendulumSimulation(states, time, p)
         R = eul2rotm_custom([phi, theta, psi]);
 
         % Pendulum bob position
-        xb = x + p.ell*sin(al);
+        xb = x + p.l*sin(al);
         yb = y;
-        zb = z + p.ell*cos(al);
+        zb = z + p.l*cos(al);
 
         % Draw quadcopter
         drawDrone(x, y, z, R, p);

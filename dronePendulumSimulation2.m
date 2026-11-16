@@ -4,7 +4,7 @@ function dronePendulumSimulation2(states, time, p)
 
     if nargin < 3
         p.L   = 0.243;
-        p.ell = 0.5;
+        p.l = 0.5;
     end
 
     v = VideoWriter('drone_pendulum2.mp4','MPEG-4');
@@ -127,9 +127,9 @@ function dronePendulumSimulation2(states, time, p)
         R = eul2rotm_custom([phi, theta, psi]);
 
         % Pendulum bob position
-        xb = x + p.ell*sin(al);
+        xb = x + p.l*sin(al);
         yb = y;
-        zb = z + p.ell*cos(al);
+        zb = z + p.l*cos(al);
 
         % Trajectory trail
         plot3(ax, pos(1:k,1), pos(1:k,2), pos(1:k,3), ...

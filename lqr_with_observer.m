@@ -9,8 +9,18 @@ m = size(B,2); % control inputs
 p = size(C,1); % measured outputs
 
 %% Design LQR Controller (same as lqr_controller.m)
-Q_lqr = eye(n);          % 14x14 matrix
-R_lqr = eye(m);          % mxm matrix
+Q_lqr = eye(n);
+Q_lqr(1:3,1:3) = 50 * Q_lqr(1:3,1:3); % position scaling
+Q_lqr(4:6,4:6) = 25 * Q_lqr(4:6,4:6); % velocity scaling
+Q_lqr(7:9,7:9) = 2.5 * Q_lqr(7:9,7:9); % attitude scaling
+Q_lqr(10:12,10:12) = 0.75 * Q_lqr(10:12,10:12); % attitude rate scaling
+Q_lqr(13,13) = 2 * Q_lqr(13,13); % pendulum position scaling
+Q_lqr(14,14) = 0.5 * Q_lqr(14,14); % pendulum velocity scaling
+
+R_lqr = eye(m);
+R_lqr(1,1) = 10 * R_lqr(1,1); % total thrust scaling
+R_lqr(2:4,2:4) = 0.25 * R_lqr(2:4,2:4); % rotational velocity scaling
+
 K = lqr(A, B, Q_lqr, R_lqr);
 
 %% Verify Observability
