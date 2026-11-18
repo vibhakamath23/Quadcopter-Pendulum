@@ -13,3 +13,11 @@ p.Ixx = 0.0213;     % kg*m^2, body inertia about x_B
 p.Iyy = 0.0213;     % kg*m^2, body inertia about y_B
 p.Izz = 0.0282;     % kg*m^2, body inertia about z_B
 p.kD = 0.25;        % kg/s, linear translation drag coefficient
+
+% waypoints
+p.xwaypoint = [1, -1, 0, 0, 0, 0];
+p.ywaypoint = [0, 0, 1, -1, 0, 0];
+p.zwaypoint = [0, 0, 0, 0, 1, -1];
+
+% save parameters
+save('parameters.mat',"p")
